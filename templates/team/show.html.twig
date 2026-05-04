@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ team.name }}{% endblock %}
+{% block page_title %}{{ team.name }}{% endblock %}
+
+{% block breadcrumb %}
+<nav class="flex items-center gap-1.5 text-xs text-[#6e6e73] mt-0.5">
+    <a href="{{ path('app_team_index') }}" class="hover:text-[#0071e3] transition-colors">Équipes</a>
+    <span>›</span>
+    <span class="text-[#1d1d1f]">{{ team.name }}</span>
+</nav>
+{% endblock %}
+
+{% block header_actions %}
+<a href="{{ path('app_team_index') }}"
+   class="flex items-center gap-1.5 px-3.5 py-1.5 text-sm font-medium text-[#6e6e73] bg-white border border-[#d2d2d7] rounded-xl hover:bg-[#f5f5f7] transition-colors">
+    ← Retour
+</a>
+{% endblock %}
+
+{% block body %}
+
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+    <div class="bg-white rounded-2xl border border-[#d2d2d7] p-6">
+        <div class="w-14 h-14 rounded-2xl bg-green-50 flex items-center justify-center mb-4">
+            <svg class="w-7 h-7 text-green-600" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3 21v-4m0 0V5a2 2 0 012-2h6.5l1 1H21l-3 6 3 6h-8.5l-1-1H5a2 2 0 00-2 2zm9-13.5V9"/>
+            </svg>
+        </div>
+        <h2 class="text-lg font-semibold text-[#1d1d1f] mb-1">{{ team.name }}</h2>
+        <div class="space-y-3 mt-4 border-t border-[#f5f5f7] pt-4">
+            <div>
+                <p class="text-xs text-[#6e6e73] mb-0.5">Saison</p>
+                <p class="text-sm font-medium text-[#1d1d1f]">{{ team.season }}</p>
+            </div>
+            <div>
+                <p class="text-xs text-[#6e6e73] mb-0.5">Statut</p>
+                <span class="text-xs px-2.5 py-1 rounded-full font-medium
+                    {% if team.status == 'ACTIVE' %}bg-green-50 text-green-600
+                    {% else %}bg-[#f5f5f7] text-[#6e6e73]{% endif %}">
+                    {{ team.status }}
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <div class="lg:col-span-2 bg-white rounded-2xl border border-[#d2d2d7] overflow-hidden">
+        <div class="px-6 py-4 border-b border-[#f5f5f7]">
+            <h3 class="text-sm font-semibold text-[#1d1d1f]">Membres de l'équipe</h3>
+        </div>
+        <div class="py-16 text-center">
+            <p class="text-sm text-[#6e6e73]">La liste des membres sera disponible prochainement</p>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

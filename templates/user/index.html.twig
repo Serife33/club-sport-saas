@@ -1,0 +1,96 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Membres{% endblock %}
+{% block page_title %}Membres{% endblock %}
+
+{% block breadcrumb %}
+<p class="text-xs text-[#6e6e73] mt-0.5">{{ users|length }} membre{{ users|length != 1 ? 's' : '' }} au total</p>
+{% endblock %}
+
+{% block body %}
+
+{# ── Filters row ── #}
+<div class="flex items-center justify-between mb-5">
+    <div class="flex items-center gap-2">
+        {% set roles = ['ADMIN', 'COACH', 'PLAYER', 'PARENT'] %}
+        <span class="text-xs font-medium text-[#6e6e73] mr-1">Filtrer :</span>
+        {% for role in roles %}
+        <span class="px-3 py-1 rounded-full text-xs font-medium bg-white border border-[#d2d2d7] text-[#6e6e73] cursor-pointer hover:border-[#0071e3] hover:text-[#0071e3] transition-colors">
+            {{ role }}
+        </span>
+        {% endfor %}
+    </div>
+</div>
+
+{# ── Table ── #}
+<div class="bg-white rounded-2xl border border-[#d2d2d7] overflow-hidden">
+
+    {% if users is empty %}
+    <div class="py-20 text-center">
+        <svg class="w-12 h-12 text-[#d2d2d7] mx-auto mb-4" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/>
+        </svg>
+        <p class="text-sm font-medium text-[#1d1d1f] mb-1">Aucun membre</p>
+        <p class="text-xs text-[#6e6e73]">Invitez des membres pour commencer</p>
+    </div>
+
+    {% else %}
+    <table class="w-full text-sm">
+        <thead>
+            <tr class="border-b border-[#f5f5f7]">
+                <th class="px-6 py-3 text-left text-xs font-semibold text-[#6e6e73] uppercase tracking-wider">Membre</th>
+                <th class="px-6 py-3 text-left text-xs font-semibold text-[#6e6e73] uppercase tracking-wider">Rôle</th>
+                <th class="px-6 py-3 text-left text-xs font-semibold text-[#6e6e73] uppercase tracking-wider">Équipe</th>
+                <th class="px-6 py-3 text-left text-xs font-semibold text-[#6e6e73] uppercase tracking-wider">Statut</th>
+                <th class="px-6 py-3"></th>
+            </tr>
+        </thead>
+        <tbody class="divide-y divide-[#f5f5f7]">
+            {% for user in users %}
+            <tr class="hover:bg-[#f5f5f7] transition-colors group">
+                <td class="px-6 py-3.5">
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-full bg-gradient-to-br from-[#0071e3] to-[#00c7be] flex items-center justify-center text-white text-xs font-semibold flex-shrink-0">
+                            {{ user.firstname|first|upper }}{{ user.lastname|first|upper }}
+                        </div>
+                        <div>
+                            <p class="font-medium text-[#1d1d1f]">{{ user.firstname }} {{ user.lastname }}</p>
+                            <p class="text-xs text-[#6e6e73]">{{ user.email }}</p>
+                        </div>
+                    </div>
+                </td>
+                <td class="px-6 py-3.5">
+                    <span class="px-2.5 py-1 rounded-full text-xs font-medium
+                        {% if user.role == 'ADMIN' %}bg-red-50 text-red-600
+                        {% elseif user.role == 'COACH' %}bg-blue-50 text-blue-600
+                        {% elseif user.role == 'PLAYER' %}bg-green-50 text-green-600
+                        {% else %}bg-amber-50 text-amber-600{% endif %}">
+                        {{ user.role }}
+                    </span>
+                </td>
+                <td class="px-6 py-3.5 text-[#6e6e73]">
+                    {{ user.team ? user.team.name : '—' }}
+                </td>
+                <td class="px-6 py-3.5">
+                    <span class="inline-flex items-center gap-1.5 text-xs font-medium
+                        {% if user.status == 'ACTIVE' %}text-green-600{% elseif user.status == 'SUSPENDED' %}text-red-600{% else %}text-[#6e6e73]{% endif %}">
+                        <span class="w-1.5 h-1.5 rounded-full flex-shrink-0
+                            {% if user.status == 'ACTIVE' %}bg-green-500{% elseif user.status == 'SUSPENDED' %}bg-red-500{% else %}bg-[#d2d2d7]{% endif %}">
+                        </span>
+                        {{ user.status }}
+                    </span>
+                </td>
+                <td class="px-6 py-3.5 text-right">
+                    <a href="{{ path('app_user_show', {id: user.id}) }}"
+                       class="opacity-0 group-hover:opacity-100 transition-opacity text-xs text-[#0071e3] font-medium hover:underline">
+                        Voir →
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% endif %}
+</div>
+
+{% endblock %}

@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Équipes{% endblock %}
+{% block page_title %}Équipes{% endblock %}
+
+{% block breadcrumb %}
+<p class="text-xs text-[#6e6e73] mt-0.5">{{ teams|length }} équipe{{ teams|length != 1 ? 's' : '' }}</p>
+{% endblock %}
+
+{% block body %}
+
+{% if teams is empty %}
+<div class="bg-white rounded-2xl border border-[#d2d2d7] py-20 text-center">
+    <svg class="w-12 h-12 text-[#d2d2d7] mx-auto mb-4" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M3 21v-4m0 0V5a2 2 0 012-2h6.5l1 1H21l-3 6 3 6h-8.5l-1-1H5a2 2 0 00-2 2zm9-13.5V9"/>
+    </svg>
+    <p class="text-sm font-medium text-[#1d1d1f] mb-1">Aucune équipe</p>
+    <p class="text-xs text-[#6e6e73]">Créez votre première équipe pour commencer</p>
+</div>
+
+{% else %}
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+    {% for team in teams %}
+    <a href="{{ path('app_team_show', {id: team.id}) }}"
+       class="card bg-white rounded-2xl border border-[#d2d2d7] p-5 block hover:no-underline">
+        <div class="flex items-start justify-between mb-4">
+            <div class="w-11 h-11 rounded-xl bg-green-50 flex items-center justify-center">
+                <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 21v-4m0 0V5a2 2 0 012-2h6.5l1 1H21l-3 6 3 6h-8.5l-1-1H5a2 2 0 00-2 2zm9-13.5V9"/>
+                </svg>
+            </div>
+            <span class="text-xs px-2.5 py-1 rounded-full font-medium
+                {% if team.status == 'ACTIVE' %}bg-green-50 text-green-600
+                {% else %}bg-[#f5f5f7] text-[#6e6e73]{% endif %}">
+                {{ team.status }}
+            </span>
+        </div>
+        <h3 class="text-sm font-semibold text-[#1d1d1f] mb-1">{{ team.name }}</h3>
+        <p class="text-xs text-[#6e6e73]">Saison {{ team.season }}</p>
+    </a>
+    {% endfor %}
+</div>
+{% endif %}
+
+{% endblock %}

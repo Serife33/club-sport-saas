@@ -1,20 +1,129 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello DashboardController!{% endblock %}
+{% block title %}Tableau de bord{% endblock %}
+{% block page_title %}Tableau de bord{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+{# ── Stats cards ── #}
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code>/var/www/html/src/Controller/DashboardController.php</code></li>
-        <li>Your template at <code>/var/www/html/templates/dashboard/index.html.twig</code></li>
-    </ul>
+    <a href="{{ path('app_user_index') }}" class="card bg-white rounded-2xl border border-[#d2d2d7] px-6 py-5 flex items-center gap-4 hover:no-underline">
+        <div class="w-11 h-11 rounded-xl bg-blue-50 flex items-center justify-center flex-shrink-0">
+            <svg class="w-5 h-5 text-[#0071e3]" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/>
+            </svg>
+        </div>
+        <div>
+            <p class="text-2xl font-bold text-[#1d1d1f]">{{ stats.members }}</p>
+            <p class="text-sm text-[#6e6e73]">Membres</p>
+        </div>
+    </a>
+
+    <a href="{{ path('app_team_index') }}" class="card bg-white rounded-2xl border border-[#d2d2d7] px-6 py-5 flex items-center gap-4 hover:no-underline">
+        <div class="w-11 h-11 rounded-xl bg-green-50 flex items-center justify-center flex-shrink-0">
+            <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3 21v-4m0 0V5a2 2 0 012-2h6.5l1 1H21l-3 6 3 6h-8.5l-1-1H5a2 2 0 00-2 2zm9-13.5V9"/>
+            </svg>
+        </div>
+        <div>
+            <p class="text-2xl font-bold text-[#1d1d1f]">{{ stats.teams }}</p>
+            <p class="text-sm text-[#6e6e73]">Équipes</p>
+        </div>
+    </a>
+
+    <a href="{{ path('app_event_index') }}" class="card bg-white rounded-2xl border border-[#d2d2d7] px-6 py-5 flex items-center gap-4 hover:no-underline">
+        <div class="w-11 h-11 rounded-xl bg-purple-50 flex items-center justify-center flex-shrink-0">
+            <svg class="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+            </svg>
+        </div>
+        <div>
+            <p class="text-2xl font-bold text-[#1d1d1f]">{{ stats.events }}</p>
+            <p class="text-sm text-[#6e6e73]">Événements</p>
+        </div>
+    </a>
+
+</div>
+
+{# ── Bottom grid ── #}
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+    {# Recent members #}
+    <div class="lg:col-span-2 bg-white rounded-2xl border border-[#d2d2d7] overflow-hidden">
+        <div class="px-6 py-4 border-b border-[#f5f5f7] flex items-center justify-between">
+            <h2 class="text-sm font-semibold text-[#1d1d1f]">Membres récents</h2>
+            <a href="{{ path('app_user_index') }}" class="text-xs text-[#0071e3] font-medium hover:underline">Voir tout</a>
+        </div>
+
+        {% if recent_members is empty %}
+        <div class="px-6 py-12 text-center">
+            <svg class="w-10 h-10 text-[#d2d2d7] mx-auto mb-3" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/>
+            </svg>
+            <p class="text-sm text-[#6e6e73]">Aucun membre pour l'instant</p>
+        </div>
+        {% else %}
+        <ul class="divide-y divide-[#f5f5f7]">
+            {% for member in recent_members %}
+            <li>
+                <a href="{{ path('app_user_show', {id: member.id}) }}" class="flex items-center gap-4 px-6 py-3.5 hover:bg-[#f5f5f7] transition-colors">
+                    <div class="w-9 h-9 rounded-full bg-gradient-to-br from-[#0071e3] to-[#00c7be] flex items-center justify-center text-white text-xs font-semibold flex-shrink-0">
+                        {{ member.firstname|first|upper }}{{ member.lastname|first|upper }}
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <p class="text-sm font-medium text-[#1d1d1f] truncate">{{ member.firstname }} {{ member.lastname }}</p>
+                        <p class="text-xs text-[#6e6e73] truncate">{{ member.email }}</p>
+                    </div>
+                    <span class="text-xs px-2.5 py-1 rounded-full font-medium
+                        {% if member.role == 'ADMIN' %}bg-red-50 text-red-600
+                        {% elseif member.role == 'COACH' %}bg-blue-50 text-blue-600
+                        {% elseif member.role == 'PLAYER' %}bg-green-50 text-green-600
+                        {% else %}bg-amber-50 text-amber-600{% endif %}">
+                        {{ member.role }}
+                    </span>
+                </a>
+            </li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+    </div>
+
+    {# Quick actions #}
+    <div class="bg-white rounded-2xl border border-[#d2d2d7] overflow-hidden">
+        <div class="px-6 py-4 border-b border-[#f5f5f7]">
+            <h2 class="text-sm font-semibold text-[#1d1d1f]">Actions rapides</h2>
+        </div>
+        <div class="p-4 space-y-2">
+            <a href="{{ path('app_user_index') }}"
+               class="flex items-center gap-3 w-full px-4 py-3 rounded-xl hover:bg-[#f5f5f7] transition-colors text-left">
+                <div class="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center flex-shrink-0">
+                    <svg class="w-4 h-4 text-[#0071e3]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/>
+                    </svg>
+                </div>
+                <span class="text-sm font-medium text-[#1d1d1f]">Ajouter un membre</span>
+            </a>
+            <a href="{{ path('app_team_index') }}"
+               class="flex items-center gap-3 w-full px-4 py-3 rounded-xl hover:bg-[#f5f5f7] transition-colors text-left">
+                <div class="w-8 h-8 rounded-lg bg-green-50 flex items-center justify-center flex-shrink-0">
+                    <svg class="w-4 h-4 text-green-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/>
+                    </svg>
+                </div>
+                <span class="text-sm font-medium text-[#1d1d1f]">Créer une équipe</span>
+            </a>
+            <a href="{{ path('app_event_index') }}"
+               class="flex items-center gap-3 w-full px-4 py-3 rounded-xl hover:bg-[#f5f5f7] transition-colors text-left">
+                <div class="w-8 h-8 rounded-lg bg-purple-50 flex items-center justify-center flex-shrink-0">
+                    <svg class="w-4 h-4 text-purple-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/>
+                    </svg>
+                </div>
+                <span class="text-sm font-medium text-[#1d1d1f]">Créer un événement</span>
+            </a>
+        </div>
+    </div>
+
 </div>
 {% endblock %}
