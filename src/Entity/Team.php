@@ -25,6 +25,9 @@ class Team
     #[ORM\Column(length: 15)]
     private ?string $status = null;
 
+    #[ORM\ManyToOne]
+    private ?Club $club = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -63,6 +66,17 @@ class Team
     {
         $this->status = $status;
 
+        return $this;
+    }
+
+    public function getClub(): ?Club
+    {
+        return $this->club;
+    }
+
+    public function setClub(?Club $club): static
+    {
+        $this->club = $club;
         return $this;
     }
 }

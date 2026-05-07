@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Invitations 
+{% endblock %}
+
+{% block body %}
+    <h1>Liste des invitations</h1>
+
+    {% for invitation in invitations %}
+        <p>
+            {{ invitation.email }} 
+            {{ invitation.role }} 
+            {{ invitation.sentAt | date('d/m/Y') }} 
+            {{ invitation.invitedBy.firstname }}
+            {{ invitation.invitedBy.lastname }}
+        </p>
+    {% else %}
+        <p>Aucune invitation pour le moment.</p>
+    {% endfor %}
+
+{% endblock %}

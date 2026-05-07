@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Envoyer une invitation 
+{% endblock %}
+
+{% block body %}
+    <h1>Envoyer une invitation </h1>
+
+    {{ form_start(form) }}
+            <div>
+                {{ form_label(form.email) }}
+                {{ form_widget(form.email) }}
+                {{ form_errors(form.email) }}
+            </div>
+            <div>
+                {{ form_label(form.role) }}
+                {{ form_widget(form.role) }}
+                {{ form_errors(form.role) }}
+            </div>
+            <div>
+                {{ form_label(form.team) }}
+                {{ form_widget(form.team) }}
+                {{ form_errors(form.team) }}
+            </div>  
+            <button> Envoyer </button>   
+    {{ form_end(form) }}
+
+{% endblock %}
+

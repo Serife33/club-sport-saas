@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Membres{% endblock %}
+
+
+{% block body %}
+    <h1>Liste des membres</h1>
+
+    {% for user in users %}
+        <p>
+            <a href={{ path('app_user_show', {id:user.id}) }}>
+                {{ user.firstname }} {{ user.lastname }}
+            </a>
+        </p>
+    {% else %}
+        <p>Aucun membre pour le moment.</p>
+    {% endfor %}
+
+
+{% endblock %}

@@ -90,14 +90,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getBirhdate(): ?\DateTime
+    public function getBirthdate(): ?\DateTime
     {
         return $this->birthdate;
     }
 
-    public function setBirhdate(\DateTime $birhdate): static
+    public function setBirthdate(\DateTime $birthdate): static
     {
-        $this->birthdate = $birhdate;
+        $this->birthdate = $birthdate;
 
         return $this;
     }
@@ -217,7 +217,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function getRoles(): array
     {
-        return array_filter([$this->role]);
+        if (!$this->role) {
+            return ['ROLE_PLAYER'];
+        }
+        return ['ROLE_' . $this->role];
     }
 
     public function eraseCredentials(): void

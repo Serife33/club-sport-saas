@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ user.firstname }} {{ user.lastname }}{% endblock %}
+
+{% block body %}
+    <h1>{{ user.firstname }} {{ user.lastname }}</h1>
+    <p>Email : {{ user.email }}</p>
+    <p>Rôle : {{ user.role }}</p>
+    <p>
+        <a href={{ path('app_user_edit', {id: user.id}) }}> 
+            Modifier
+        </a>
+    </p>
+
+    <a href="{{ path('app_user_index') }}">← Retour à la liste</a>
+{% endblock %}

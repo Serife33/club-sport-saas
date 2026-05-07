@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Activer le compte
+{% endblock %}
+
+{% block body %}
+    <h1> Activer le compte </h1>
+
+    {{ form_start(form) }}
+            <div>
+                {{ form_label(form.firstname) }}
+                {{ form_widget(form.firstname) }}
+                {{ form_errors(form.firstname) }}
+            </div>
+            <div>
+                {{ form_label(form.lastname) }}
+                {{ form_widget(form.lastname) }}
+                {{ form_errors(form.lastname) }}
+            </div>
+            <div>
+                {{ form_label(form.birthdate) }}
+                {{ form_widget(form.birthdate) }}
+                {{ form_errors(form.birthdate) }}
+            </div> 
+            <div>
+                {{ form_label(form.phone) }}
+                {{ form_widget(form.phone) }}
+                {{ form_errors(form.phone) }}
+            </div> 
+            <div>
+                {{ form_label(form.plainPassword) }}
+                {{ form_widget(form.plainPassword) }}
+                {{ form_errors(form.plainPassword) }}
+            </div>
+            <button> Envoyer </button>   
+    {{ form_end(form) }}
+
+{% endblock %}

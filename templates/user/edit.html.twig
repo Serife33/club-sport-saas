@@ -1,0 +1,70 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Modifier {{ user.firstname }} {{ user.lastname }} {% endblock %}
+
+{% block body %}
+
+    <h1>Modifier {{user.firstname}} {{user.lastname}}</h1>
+
+    {{ form_start(form) }}
+
+    <div>
+        {{ form_label(form.firstname) }}
+        {{ form_widget(form.firstname) }}
+        {{ form_errors(form.firstname) }}
+    </div>
+    <div>
+        {{ form_label(form.lastname) }}
+        {{ form_widget(form.lastname) }}
+        {{ form_errors(form.lastname) }}
+    </div>
+    <div>
+        {{ form_label(form.birthdate) }}
+        {{ form_widget(form.birthdate) }}
+        {{ form_errors(form.birthdate) }}
+    </div>
+    <div>
+        {{ form_label(form.phone) }}
+        {{ form_widget(form.phone) }}
+        {{ form_errors(form.phone) }}  
+    </div>
+    <div>
+        {{ form_label(form.photoUrl) }}
+        {{ form_widget(form.photoUrl) }}
+        {{ form_errors(form.photoUrl) }}  
+    </div>
+    <div>
+        {{ form_label(form.role) }}
+        {{ form_widget(form.role) }}
+        {{ form_errors(form.role) }}  
+    </div>
+    <div>
+        {{ form_label(form.status) }}
+        {{ form_widget(form.status) }}
+        {{ form_errors(form.status) }}  
+    </div>
+    <div>
+        {{ form_label(form.email) }}
+        {{ form_widget(form.email) }}
+        {{ form_errors(form.email) }}  
+    </div>
+    <div>
+        {{ form_label(form.emergencyContactName) }}
+        {{ form_widget(form.emergencyContactName) }}
+        {{ form_errors(form.emergencyContactName) }}  
+    </div>
+    <div>
+        {{ form_label(form.emergencyContactPhone) }}
+        {{ form_widget(form.emergencyContactPhone) }}
+        {{ form_errors(form.emergencyContactPhone) }}  
+    </div>
+    <div>
+        {{ form_label(form.team) }}
+        {{ form_widget(form.team) }}
+        {{ form_errors(form.team) }}  
+    </div>
+    <button type="submit">Enregistrer</button>
+
+    {{ form_end(form) }}
+
+{% endblock %}
